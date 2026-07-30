@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <!-- Allow cleartext only for Instagram domains required by the WebView.
+         Everything else defaults to HTTPS. -->
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">instagram.com</domain>
+        <domain includeSubdomains="true">cdninstagram.com</domain>
+        <domain includeSubdomains="true">fbcdn.net</domain>
+    </domain-config>
+</network-security-config>

@@ -1,0 +1,71 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  analyze:
+    name: Static analysis
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.38.x'
+          channel: 'stable'
+          cache: true
+      - run: flutter pub get
+      - run: flutter analyze
+
+  test:
+    name: Unit tests + coverage
+    runs-on: ubuntu-latest
+    needs: analyze
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.38.x'
+          channel: 'stable'
+          cache: true
+      - run: flutter pub get
+      - run: flutter test --coverage
+      - uses: actions/upload-artifact@v4
+        with:
+          name: coverage
+          path: coverage/lcov.info
+
+  build:
+    name: Build Android APK
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.38.x'
+          channel: 'stable'
+          cache: true
+      - run: flutter pub get
+      - run: flutter build apk --debug
+      - uses: actions/upload-artifact@v4
+        with:
+          name: noinsta-debug-apk
+          path: build/app/outputs/flutter-apk/app-debug.apk
+
+  audit:
+    name: Dependency audit
+    runs-on: ubuntu-latest
+    needs: analyze
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.38.x'
+          channel: 'stable'
+          cache: true
+      - run: flutter pub get
+      - run: flutter pub outdated --no-transitive-deps

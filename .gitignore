@@ -1,0 +1,45 @@
+# ─── Private local files ───────────────────────────────────────────
+*.local.md
+
+# ─── Environment ────────────────────────────────────────────────────
+.env
+.env.*
+!.env.example
+
+# ─── Coverage ───────────────────────────────────────────────────────
+coverage/
+node_modules/
+vendor/
+.pnpm-store/
+
+# ─── Build / Output ─────────────────────────────────────────────────
+dist/
+build/
+out/
+*.exe
+*.dll
+*.so
+*.dylib
+
+# ─── IDE / Editor ───────────────────────────────────────────────────
+.vscode/settings.json
+.vscode/launch.json
+.idea/
+*.swp
+*.swo
+*~
+
+# ─── OS ─────────────────────────────────────────────────────────────
+Thumbs.db
+.DS_Store
+Desktop.ini
+
+# ─── Logs ───────────────────────────────────────────────────────────
+*.log
+logs/
+
+# ─── Flutter ─────────────────────────────────────────────────────────
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages

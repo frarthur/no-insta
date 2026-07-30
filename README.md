@@ -21,8 +21,8 @@ flutter build apk --release
 
 ## Screenshots
 
-| Login                     | Chat                    | Profile                       | Data safety                    | Cookies                     | 2FA                   |
-| ------------------------- | ----------------------- | ----------------------------- | ------------------------------ | --------------------------- | --------------------- |
+| Login                           | Chat                          | Profile                             | Data safety                               | Cookies                             | 2FA                         |
+| ------------------------------- | ----------------------------- | ----------------------------------- | ----------------------------------------- | ----------------------------------- | --------------------------- |
 | ![Login](screenshots/login.jpg) | ![Chat](screenshots/chat.jpg) | ![Profile](screenshots/profile.jpg) | ![Data](screenshots/save_information.jpg) | ![Cookies](screenshots/cookies.jpg) | ![2FA](screenshots/A2F.jpg) |
 
 ## What the app can do
@@ -44,7 +44,6 @@ Access to:
 - Browse the Instagram feed (intentionally blocked, redirects to your profile).
 - Browse Reels (intentionally blocked, redirects to your profile).
 - Display suggested or recommended content on the Explore page.
-- Double tap to like 💔 (the Instagram web version does not support this gesture).
 - Send a photo directly from the camera (take the photo first with your camera app, then send it from the gallery).
 - Collect, store, or transmit any personal data. No backend, no database, no analytics. All account credentials and cookies are stored locally by the WebView, just like any browser.
 
@@ -64,6 +63,11 @@ Access to: (original Instagram access)
 - The main feed (Home tab).
 - The Reels tab.
 - (In progress) Suggested content on the Explore page.
+
+## Instagram features removed (due to the web version)
+
+- Double tap to like 💔
+- x1.5 speed (better for everyone trust me)
 
 ## Data and privacy
 
@@ -97,10 +101,10 @@ flutter run
 
 ## Future features
 
-- Add settings system (choosen betewen instagram setteing or app setting in the gear on profil page)
+- Add settings system (choose between Instagram settings or app settings)
 - Choose your app icon
-- Open the Instagram link directly in the app, instead of Instagram
-- Adblock and Script (tempermonkey) + don't care about cookies
+- Open Instagram links directly in the app
+- Adblock and script support (Tampermonkey) + cookie management
 
 ## License
 

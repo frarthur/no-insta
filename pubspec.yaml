@@ -1,4 +1,4 @@
-name: instalite
+name: noinsta
 description: "Instagram DM-only wrapper — no feed, no reels, just messages."
 publish_to: 'none'
 version: 1.0.0+1

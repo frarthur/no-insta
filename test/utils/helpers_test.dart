@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:instalite/utils/helpers.dart';
+import 'package:noinsta/utils/helpers.dart';
 
 void main() {
   group('mimeTypeForFileName', () {

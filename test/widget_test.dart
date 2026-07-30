@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:instalite/screens/inbox_screen.dart';
+import 'package:noinsta/screens/inbox_screen.dart';
 
 void main() {
   group('InboxScreen', () {

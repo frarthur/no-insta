@@ -1,4 +1,4 @@
-package com.instalite.instalite
+package com.noads.noinsta
 
 import io.flutter.embedding.android.FlutterActivity
 

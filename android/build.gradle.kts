@@ -1,3 +1,7 @@
+dependencyLocking {
+    lockAllConfigurations()
+}
+
 allprojects {
     repositories {
         google()

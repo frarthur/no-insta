@@ -13,10 +13,13 @@ void main() {
   ]);
 
   // Transparent system bars to blend with Instagram's dark UI.
+  // `statusBarBrightness` is the iOS side of the same setting (dark background
+  // -> light status bar icons); `statusBarIconBrightness` only applies to Android.
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
       statusBarIconBrightness: Brightness.light,
+      statusBarBrightness: Brightness.dark,
       systemNavigationBarColor: Colors.black,
       systemNavigationBarIconBrightness: Brightness.light,
     ),

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
@@ -13,7 +14,7 @@ const _kInitialUrl = instaliteInitialUrl;
 const _kPhotoChannel = 'InstalitePhotoPicker';
 const _kAudioChannel = 'InstaliteAudioRecorder';
 
-const _kUserAgent = instaliteUserAgent;
+final _kUserAgent = instaliteUserAgentFor(defaultTargetPlatform);
 
 const _kOnPageLoadJs = r'''
 (function() {
@@ -35,17 +36,23 @@ const _kOnPageLoadJs = r'''
   }
 
   // ---------- audio / mic monkeypatch ----------
+  // Guarded: navigator.mediaDevices (or getUserMedia) can be missing in
+  // WKWebView / non-secure contexts. Without the guard the whole script throws
+  // and the feed/reels blocker below never runs.
   if (!window.__instalite_mic_patched__) {
     window.__instalite_mic_patched__ = true;
-    var _origGetUserMedia = navigator.mediaDevices.getUserMedia.bind(navigator.mediaDevices);
-    navigator.mediaDevices.getUserMedia = function(constraints) {
-      if (constraints && constraints.audio && !constraints.video &&
-          window.location.pathname.indexOf('/direct/') === 0) {
-        InstaliteAudioRecorder.postMessage('start');
-        return new Promise(function() {});
-      }
-      return _origGetUserMedia(constraints);
-    };
+    var _mediaDevices = navigator.mediaDevices;
+    if (_mediaDevices && typeof _mediaDevices.getUserMedia === 'function') {
+      var _origGetUserMedia = _mediaDevices.getUserMedia.bind(_mediaDevices);
+      _mediaDevices.getUserMedia = function(constraints) {
+        if (constraints && constraints.audio && !constraints.video &&
+            window.location.pathname.indexOf('/direct/') === 0) {
+          InstaliteAudioRecorder.postMessage('start');
+          return new Promise(function() {});
+        }
+        return _origGetUserMedia(constraints);
+      };
+    }
   }
 
   // ---------- feed / reels blocker ----------
@@ -185,6 +192,7 @@ String _injectFileJs(String base64, String mimeType, String fileName) {
   var raw = Uint8Array.from(atob('$base64'), function(c) { return c.charCodeAt(0); });
   var blob = new Blob([raw], { type: '$mimeType' });
   var file = new File([blob], '$fileName', { type: '$mimeType' });
+  if (typeof DataTransfer === 'undefined') return;
   var dt = new DataTransfer();
   dt.items.add(file);
   target.files = dt.files;

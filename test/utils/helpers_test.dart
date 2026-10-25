@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:noinsta/utils/helpers.dart';
@@ -54,6 +55,17 @@ void main() {
     test('userAgent contains Chrome and Android identifiers', () {
       expect(instaliteUserAgent, contains('Chrome'));
       expect(instaliteUserAgent, contains('Android'));
+    });
+
+    test('iOS userAgent contains Safari and iPhone identifiers', () {
+      expect(instaliteUserAgentIos, contains('Safari'));
+      expect(instaliteUserAgentIos, contains('iPhone'));
+    });
+
+    test('userAgentFor picks a platform-appropriate UA', () {
+      expect(instaliteUserAgentFor(TargetPlatform.iOS), instaliteUserAgentIos);
+      expect(instaliteUserAgentFor(TargetPlatform.android), instaliteUserAgent);
+      expect(instaliteUserAgentFor(TargetPlatform.macOS), instaliteUserAgent);
     });
   });
 }

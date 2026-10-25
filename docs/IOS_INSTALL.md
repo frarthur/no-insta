@@ -40,6 +40,20 @@ Puis :
 
 ### Si l'installation échoue
 
+- **`Login failed (-80046): This action cannot be completed at this time`** : depuis le
+  **22 octobre 2026**, Apple refuse le jeton Xcode demandé par les outils qui se présentent
+  comme un téléphone Android (Sideloadly, AltStore…). **Ce n'est pas ton compte ni ton IPA.**
+  Sideloadly n'a pas encore de correctif. Utiliser **iloader** (gratuit, open source,
+  Windows/Linux/macOS) qui passe par une anisette Mac :
+  1. Installer iTunes (version apple.com).
+  2. Télécharger `iloader-windows-x64.msi` sur https://github.com/nab138/iloader/releases/latest
+     (v2.4.0 minimum).
+  3. Brancher l'iPhone, lancer iloader, puis « Import IPA » → `noinsta-unsigned.ipa`.
+  4. Se connecter avec l'Apple ID + 2FA (un « Mac » fantôme apparaît dans tes appareils
+     Apple ID, c'est normal).
+  5. Même suite qu'avec Sideloadly : confiance du certificat + mode développeur.
+  ⚠️ Ne réessaie pas ton Apple ID en boucle sur Sideloadly : Apple peut verrouiller
+  temporairement le compte.
 - **« Unable to install » / erreur de bundle ID** : dans Sideloadly, ouvrir les options
   avancées et changer le *Bundle ID* (par ex. `com.tonpseudo.noinsta`).
 - **L'app se ferme au démarrage** : vérifier le Mode développeur (étape 8) puis

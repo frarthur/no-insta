@@ -1,0 +1,54 @@
+name: iOS
+
+# Builds an unsigned .ipa that can be signed and installed from Windows with
+# Sideloadly / AltStore (free Apple ID) or with Xcode on macOS.
+# See docs/IOS_INSTALL.md.
+on:
+  workflow_dispatch:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: read
+
+jobs:
+  unsigned-ipa:
+    name: Build unsigned IPA
+    runs-on: macos-15
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2
+        with:
+          flutter-version: "3.38.3"
+          channel: "stable"
+          cache: true
+
+      - run: flutter pub get --enforce-lockfile
+
+      # --no-codesign keeps the build free of any Apple developer account:
+      # signing happens later on the device side (Sideloadly / Xcode).
+      - name: Build iOS release (no codesign)
+        run: flutter build ios --release --no-codesign
+
+      - name: Package unsigned IPA
+        run: |
+          set -euo pipefail
+          APP="build/ios/iphoneos/Runner.app"
+          test -d "$APP"
+          rm -rf build/ipa-payload
+          mkdir -p build/ipa-payload/Payload
+          cp -R "$APP" build/ipa-payload/Payload/
+          cd build/ipa-payload
+          zip -qry "$GITHUB_WORKSPACE/noinsta-unsigned.ipa" Payload
+          cd "$GITHUB_WORKSPACE"
+          ls -lh noinsta-unsigned.ipa
+          shasum -a 256 noinsta-unsigned.ipa
+
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: noinsta-unsigned-ipa
+          path: noinsta-unsigned.ipa
+          if-no-files-found: error
+          retention-days: 30
